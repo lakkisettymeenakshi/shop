@@ -11,20 +11,22 @@ function App() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const config = {
     headers: { 'x-auth-token': token }
   };
 
   const getTasks = async () => {
-    if (!token) return;
-    try {
-      const response = await axios.get(`${API_URL}/tasks`, config);
-      setTasks(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  if (!token) return;
+  setLoading(true); // Turn it on
+  try {
+    const response = await axios.get(`${API_URL}/tasks`, config);
+    setTasks(response.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+  setLoading(false); // Turn it off
+};
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -69,7 +71,7 @@ function App() {
 
   const deleteTask = async (id) => {
     try {
-      // Fixed this to use .delete instead of .get
+      
       await axios.delete(`${API_URL}/tasks/${id}`, config);
       getTasks();
     } catch (error) { console.error(error); }
@@ -107,25 +109,41 @@ function App() {
             <button type="submit" className="add-btn">Add</button>
           </form>
 
-          {tasks.length === 0 ? <p style={{textAlign: 'center'}}>No tasks found!</p> : (
-            <ul>
-              {tasks.map((task) => (
-                <li key={task._id}>
-                  <span 
-                    onClick={() => toggleComplete(task._id, task.completed)}
-                    style={{ textDecoration: task.completed ? 'line-through' : 'none', cursor:'pointer' }}
-                  >
-                    {task.name}
-                  </span>
-                  <button onClick={() => deleteTask(task._id)} className="delete-btn">Delete</button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
+{loading ? (
+  <div className="loading-container">
+    <div className="loader"></div>
+    <p>Waking up the server...</p>
+  </div>
+) : (
+  <>
+    {tasks.length === 0 ? (
+      <p style={{ textAlign: 'center' }}>No tasks found!</p>
+    ) : (
+      <ul>
+        {tasks.map((task) => (
+          <li key={task._id}>
+            <span
+              onClick={() => toggleComplete(task._id, task.completed)}
+              style={{
+                textDecoration: task.completed ? 'line-through' : 'none',
+                cursor: 'pointer',
+              }}
+            >
+              {task.name}
+            </span>
+            <button onClick={() => deleteTask(task._id)} className="delete-btn">
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    )}
+  </>
+)}
+</>
+)}
+</div>
+      
+      );
+    }
 export default App;
