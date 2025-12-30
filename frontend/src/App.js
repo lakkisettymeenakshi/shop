@@ -105,9 +105,15 @@ function App() {
             <h1>Task Manager</h1>
             <button onClick={logout} className="delete-btn" style={{height:'30px'}}>Logout</button>
           </div>
-          <div className="input-group">
-            <input type="text" placeholder="Search tasks..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '10px', backgroundColor: '#f9f9f9' }}/>
-            </div>
+          <div className="input-group" style={{ marginBottom: '20px' }}>
+            <input 
+            type="text" 
+            placeholder="Search tasks..." 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            style={{ backgroundColor: '#f9f9f9' }}
+            />
+          </div>
           <form onSubmit={addTask} className="input-group">
             <input type="text" placeholder="New Task..." value={name} onChange={(e) => setName(e.target.value)} />
             <button type="submit" className="add-btn">Add</button>
@@ -143,13 +149,7 @@ function App() {
     ))}
   </ul>
 )}
-            <button onClick={() => deleteTask(task._id)} className="delete-btn">
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    )}
+            
   </>
 )}
 </>
