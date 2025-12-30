@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API_URL = "https://shop-backend-p7t6.onrender.com/api"; 
+
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [name, setName] = useState(''); // Added this missing state
+  const [name, setName] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token') || '');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
 
-  // Corrected Helper for Headers
   const config = {
     headers: { 'x-auth-token': token }
   };
@@ -18,7 +19,7 @@ function App() {
   const getTasks = async () => {
     if (!token) return;
     try {
-      const response = await axios.get('http://localhost:5000/api/tasks', config);
+      const response = await axios.get(`${API_URL}/tasks`, config);
       setTasks(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -29,7 +30,8 @@ function App() {
     e.preventDefault();
     const endpoint = isRegistering ? 'register' : 'login';
     try {
-      const res = await axios.post(`http://localhost:5000/api/auth/${endpoint}`, { email, password });
+      
+      const res = await axios.post(`${API_URL}/auth/${endpoint}`, { email, password });
       if (!isRegistering) {
         localStorage.setItem('token', res.data.token);
         setToken(res.data.token);
@@ -52,7 +54,7 @@ function App() {
     e.preventDefault();
     if (!name) return;
     try {
-      await axios.post('http://localhost:5000/api/tasks', { name }, config);
+      await axios.post(`${API_URL}/tasks`, { name }, config);
       setName('');
       getTasks();
     } catch (error) { console.error(error); }
@@ -60,14 +62,15 @@ function App() {
 
   const toggleComplete = async (id, currentStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/tasks/${id}`, { completed: !currentStatus }, config);
+      await axios.patch(`${API_URL}/tasks/${id}`, { completed: !currentStatus }, config);
       getTasks();
     } catch (error) { console.error(error); }
   };
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, config);
+      // Fixed this to use .delete instead of .get
+      await axios.delete(`${API_URL}/tasks/${id}`, config);
       getTasks();
     } catch (error) { console.error(error); }
   };
