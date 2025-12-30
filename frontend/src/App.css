@@ -107,3 +107,26 @@ body {
 .container {
   background: var(--container-bg) !important;
 }
+/* Add this at the top of App.css */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --container-bg: #ffffff;
+}
+
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --container-bg: #1e1e1e;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease;
+}
+
+.container {
+  background-color: var(--container-bg);
+  
+}
