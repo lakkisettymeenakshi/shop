@@ -12,6 +12,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const config = {
     headers: { 'x-auth-token': token }
   };
@@ -82,7 +83,7 @@ function App() {
       getTasks();
     }
   }, [token]);
-
+   const filteredTasks = tasks.filter(task => task.name.toLowerCase().includes(searchTerm.toLowerCase()));
   return (
     <div className="container">
       {!token ? (
@@ -93,6 +94,7 @@ function App() {
             <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
             <button type="submit" className="add-btn">{isRegistering ? 'Sign Up' : 'Login'}</button>
           </form>
+             
           <p onClick={() => setIsRegistering(!isRegistering)} style={{cursor:'pointer', marginTop: '10px', color: 'blue'}}>
             {isRegistering ? 'Already have an account? Login' : 'Need an account? Sign Up'}
           </p>
@@ -103,7 +105,9 @@ function App() {
             <h1>Task Manager</h1>
             <button onClick={logout} className="delete-btn" style={{height:'30px'}}>Logout</button>
           </div>
-
+          <div className="input-group">
+            <input type="text" placeholder="Search tasks..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ marginBottom: '10px', backgroundColor: '#f9f9f9' }}/>
+            </div>
           <form onSubmit={addTask} className="input-group">
             <input type="text" placeholder="New Task..." value={name} onChange={(e) => setName(e.target.value)} />
             <button type="submit" className="add-btn">Add</button>
@@ -116,21 +120,29 @@ function App() {
   </div>
 ) : (
   <>
-    {tasks.length === 0 ? (
-      <p style={{ textAlign: 'center' }}>No tasks found!</p>
-    ) : (
-      <ul>
-        {tasks.map((task) => (
-          <li key={task._id}>
-            <span
-              onClick={() => toggleComplete(task._id, task.completed)}
-              style={{
-                textDecoration: task.completed ? 'line-through' : 'none',
-                cursor: 'pointer',
-              }}
-            >
-              {task.name}
-            </span>
+    {/* Change tasks.map to filteredTasks.map */}
+{filteredTasks.length === 0 ? (
+  <p style={{ textAlign: 'center' }}>No matching tasks found!</p>
+) : (
+  <ul>
+    {filteredTasks.map((task) => (
+      <li key={task._id}>
+        <span
+          onClick={() => toggleComplete(task._id, task.completed)}
+          style={{
+            textDecoration: task.completed ? 'line-through' : 'none',
+            cursor: 'pointer',
+          }}
+        >
+          {task.name}
+        </span>
+        <button onClick={() => deleteTask(task._id)} className="delete-btn">
+          Delete
+        </button>
+      </li>
+    ))}
+  </ul>
+)}
             <button onClick={() => deleteTask(task._id)} className="delete-btn">
               Delete
             </button>
