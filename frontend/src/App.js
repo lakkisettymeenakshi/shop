@@ -30,7 +30,7 @@ function App() {
     }
     setLoading(false);
   };
-
+  
   const handleAuth = async (e) => {
     e.preventDefault();
     const endpoint = isRegistering ? 'register' : 'login';
@@ -65,19 +65,32 @@ function App() {
   };
 
   const toggleComplete = async (id, currentStatus) => {
+    // Instant UI update
+    setTasks(tasks.map(task => 
+      task._id === id ? { ...task, completed: !currentStatus } : task
+    ));
+
     try {
       await axios.patch(`${API_URL}/tasks/${id}`, { completed: !currentStatus }, config);
-      getTasks();
-    } catch (error) { console.error(error); }
+    } catch (error) {
+      getTasks(); // Revert on error
+      console.error("Failed to update task:", error);
+    }
   };
 
   const deleteTask = async (id) => {
+    const originalTasks = [...tasks];
+    setTasks(tasks.filter(t => t._id !== id)); 
+    
     try {
       await axios.delete(`${API_URL}/tasks/${id}`, config);
-      getTasks();
-    } catch (error) { console.error(error); }
+    } catch (error) { 
+      setTasks(originalTasks); 
+      alert("Could not delete task. Please try again.");
+      console.error(error); 
+    }
   };
-
+  
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark-mode');
@@ -121,7 +134,7 @@ function App() {
             <h1>Task Manager</h1>
             <div>
               <button onClick={() => setDarkMode(!darkMode)} className="add-btn" style={{marginRight: '10px', height: '30px'}}>
-                {darkMode ? 'Dark Mode' : 'Light Mode'}
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
               </button>
               <button onClick={logout} className="delete-btn" style={{height:'30px'}}>Logout</button>
             </div>
