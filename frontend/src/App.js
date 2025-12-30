@@ -121,7 +121,7 @@ function App() {
             <h1>Task Manager</h1>
             <div>
               <button onClick={() => setDarkMode(!darkMode)} className="add-btn" style={{marginRight: '10px', height: '30px'}}>
-                {darkMode ? ' ' : ''}
+                {darkMode ? ' Dark Mode' : 'Light Mode'}
               </button>
               <button onClick={logout} className="delete-btn" style={{height:'30px'}}>Logout</button>
             </div>
