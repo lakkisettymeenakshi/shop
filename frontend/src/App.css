@@ -1,19 +1,44 @@
 
+:root {
+  --bg-color: #f0f2f5;
+  --text-color: #333333;
+  --container-bg: #ffffff;
+  --item-bg: #ffffff;
+  --border-color: #dddddd;
+}
+
+.dark-mode {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --container-bg: #1e1e1e;
+  --item-bg: #2d2d2d;
+  --border-color: #444444;
+}
+
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
 .container {
   max-width: 600px;
   margin: 50px auto;
   padding: 30px;
-  background-color: #f9f9f9;
+  background-color: var(--container-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 h1 {
-  color: #333;
+  color: var(--text-color);
   text-align: center;
   margin-bottom: 30px;
 }
+
 
 .input-group {
   display: flex;
@@ -24,10 +49,13 @@ h1 {
 input {
   flex: 1;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
+  background-color: var(--container-bg);
+  color: var(--text-color);
   border-radius: 6px;
   font-size: 16px;
 }
+
 
 .add-btn {
   background-color: #4CAF50;
@@ -37,23 +65,11 @@ input {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  transition: opacity 0.2s;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  background: white;
-  margin-bottom: 10px;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 8px;
-  border-left: 5px solid #4CAF50;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.add-btn:hover {
+  opacity: 0.9;
 }
 
 .delete-btn {
@@ -64,6 +80,26 @@ li {
   border-radius: 4px;
   cursor: pointer;
 }
+
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: var(--item-bg);
+  color: var(--text-color);
+  margin-bottom: 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  border-left: 5px solid #4CAF50;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -82,51 +118,11 @@ li {
 
 .loading-container {
   text-align: center;
-  margin-top: 50px;
-}
-/* Default Light Theme */
-:root {
-  --bg-color: #ffffff;
-  --text-color: #333333;
-  --container-bg: #f4f4f4;
+  margin-top: 30px;
 }
 
-/* Dark Theme Class */
-.dark-mode {
-  --bg-color: #1a1a1a;
-  --text-color: #f4f4f4;
-  --container-bg: #2d2d2d;
-}
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: all 0.3s ease;
-}
-
-.container {
-  background: var(--container-bg) !important;
-}
-/* Add this at the top of App.css */
-:root {
-  --bg-color: #ffffff;
-  --text-color: #333333;
-  --container-bg: #ffffff;
-}
-
-.dark-mode {
-  --bg-color: #121212;
-  --text-color: #ffffff;
-  --container-bg: #1e1e1e;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background 0.3s ease;
-}
-
-.container {
-  background-color: var(--container-bg);
-  
+.auth-box {
+  display: flex;
+  flex-direction: column;
 }
